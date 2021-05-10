@@ -15,6 +15,27 @@ tinymce.init({
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
   });
   
+
+const enviarProfeOak = async function(){
+  //this siemopre devuelve referencia al elemento q llamo a la fx, en este caso boton
+  let nro= this.nro;
+  let res= await Swal.fire({
+    title:"Desea realmente continuar?",
+    text:"esta enviando el pokemon al profesor, esto no se puede revertir",
+    icon:"warning",
+    showCancelButton:true,
+    confirmButtonText:"Si, hazlo"
+  });
+  if(res.isConfirmed){
+    pokemones.splice(nro,1);
+    cargarTabla();
+    Swal.fire("Pokemon descartado","Pokemon Eliminado", "info")
+  }else{
+    Swal.fire("Cancelado", "Operacion cancelada", "error")
+  }
+};
+
+
   const pokemones=[]; //definir arreglo
   
 
@@ -60,10 +81,19 @@ tinymce.init({
 
         tdTipo.classList.add("text-center");
         tdTipo.appendChild(tipo);
-
-
         tdDescripcion.innerHTML=p.descripcion;
-        //TODO: K hago cn las acciones
+
+
+        let boton= document.createElement("button");
+        boton.classList.add("btn","btn-danger");
+        boton.innerText="Enviar al profesor";
+        boton.nro="i";
+        tdAcciones.appendChild(boton);
+        tdAcciones.classList.add("text-center");
+
+
+        boton.addEventListener("click", enviarProfeOak);
+
         //5 agregar los td al tr 
         tr.appendChild(tdNro);
         tr.appendChild(tdNombre);
